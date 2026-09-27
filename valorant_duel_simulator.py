@@ -29,7 +29,7 @@ def estado_inicial_duelo() -> dict[str, tuple[str,float,str]]:
     i : int = 0
 
     while i < 2: 
-        
+
         if i == 0 :
             lado: str = random.choice(bandos)
         else:
@@ -45,4 +45,11 @@ def estado_inicial_duelo() -> dict[str, tuple[str,float,str]]:
         i += 1
     return dicc_res
 
+def distancia_del_duelo() -> float:
+    return(random.uniform(0.0,50.0))
 
+#funcion que pickea aleatoriamente a uno de los players, el player
+#elegido será quien dispare primero. El disparo que de será elegido
+# aleatoriamente, podrá ser a la pierna, torso o cabeza y se sacará
+# la vida del diccionario que guarda el estado de la pelea la vida correspondiente
+# segun el arma y a dónde fue el disparo
