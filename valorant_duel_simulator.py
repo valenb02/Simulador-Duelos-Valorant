@@ -92,16 +92,10 @@ personajes : list[str] = ["Jett", "Reyna", "Iso", "Yoru", "Raze", "Phoenix", "Wa
 #afuera escopetas y melee
 armas : list[str] = ["Vandal", "Phantom", "Guardian", "Warden", "Bulldog",
                      "Spectre", "Stinger", "Marshal", "Outlaw", "Ares",
-                     "Odin", "Operator", "Classic", "Ghost", "Bandit", "Frenzy", "Shorty",
+                     "Odin", "Operator", "Classic", "Ghost", "Bandit", "Frenzy",
                      "Sheriff"]
 
 bandos : list[str] = ["ATTACKER", "DEFENDER"]
-
-'''
-funciones auxiliares:
-    elegir_personaje: elige y devuelve un personaje al azar de la lista de personajes
-    elegir_arma: elige y devuelve un arma al azar de la lista de armas
-'''
 
 def elegir_personaje() -> str:
     return(random.choice(personajes))
@@ -134,7 +128,8 @@ def armas_elegidas(lista_tuplas_agente_y_arma: list[tuple[str,str]], agente: str
 
 
 def disparo_aleatorio() -> str:
-
+    lista_opciones : list[str] = ["la cabeza", "el torso", "las piernas"]
+    return(random.choice(lista_opciones))
 
 ##########################################
 def distancia_del_duelo() -> float:
@@ -173,5 +168,8 @@ def disparos(dicc: dict[str, tuple[str,str,float,str,int]]):
     segundo_agente : str = sacar_agente(agentes(dicc), primer_agente)
     tuplas_agente_arma : list[tuple[str,str]] = tupla_agente_y_arma(dicc)
     arma_primer_agente : str = armas_elegidas(tuplas_agente_arma, primer_agente)
+    direccion_disparo : str = disparo_aleatorio()
 
-    print(f'{primer_agente} le ha disparado a {segundo_agente} con {arma_primer_agente}!')
+    print(f'{primer_agente} le ha disparado a {segundo_agente} con {arma_primer_agente}! en {direccion_disparo}')
+
+#disparos(estado_inicial_duelo())
