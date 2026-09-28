@@ -25,18 +25,18 @@ def elegir_arma() -> str:
     return(random.choice(armas))
 
 
-def agentes(dicc: dict[str, tuple[str,float,str,int]]) -> list[str]:
+def agentes(dicc: dict[str, tuple[str,str,float,str,int]]) -> list[str]:
     lista_de_nombres_res : list[str] = []
-    for nombres in dicc.keys():
-        lista_de_nombres_res.append(nombres)
+    for jugadores in dicc.keys():
+        lista_de_nombres_res.append(dicc[jugadores][0])
     return lista_de_nombres_res
 
 ##########################################
 def distancia_del_duelo() -> float:
     return(random.uniform(0.0,50.0))
 
-def estado_inicial_duelo() -> dict[str, tuple[str,float,str,int]]:
-    dicc_res : dict[str,tuple[str,float,str,int]] = {}
+def estado_inicial_duelo() -> dict[str, tuple[str,str,float,str,int]]:
+    dicc_res : dict[str,tuple[str,str,float,str,int]] = {}
     distancia_duelo : float = distancia_del_duelo()
     hp : int = 150
 
@@ -44,42 +44,29 @@ def estado_inicial_duelo() -> dict[str, tuple[str,float,str,int]]:
 
     while i < 2: 
 
+        personaje : str = elegir_personaje()
+        arma : str = elegir_arma()
+
         if i == 0 :
             lado: str = random.choice(bandos)
+            jugador: str = "jugador1"
         else:
             if lado == "ATTACKER":
                 lado = "DEFENDER"
             else:
                 lado = "ATTACKER"
+            jugador: str = "jugador2"
 
-        personaje : str = elegir_personaje()
-        arma : str = elegir_arma()
-        dicc_res[personaje] = (lado,distancia_duelo,arma,hp)
+        dicc_res[jugador] = (personaje,lado,distancia_duelo,arma,hp)
 
         i += 1
     return dicc_res
 
 
-#funcion que pickea aleatoriamente a uno de los players, el player
-#elegido será quien dispare primero. El disparo que de será elegido
-# aleatoriamente, podrá ser a la pierna, torso o cabeza y se sacará
-# la vida del diccionario que guarda el estado de la pelea la vida correspondiente
-# segun el arma y a dónde fue el disparo
-
-#modifica: diccionario. devuelve: 
-#valen : str = "hola"
-#print(f'{valen}')
-
-
-# necesito que mi funcion:
-# arranque uno disparando, y en el proximo turno, si es que el disparo no fue con: vandal o guardian a la cabeza, awp a cuerpo entonces en
-# el proximo turno le toque si o si al otro jugador, y que a partir de ahi el juego siga ese bucle, van uno y uno (dispara uno, dispara el otro)
-# y que se vaya 'hp' en el diccionario a medida que disparan. El juego terminará cuando el hp de alguno de los dos llegue a 0.
-
-def tupla_agente_y_arma(dicc: dict[str, tuple[str,float,str,int]]) -> list[tuple[str,str]]:
+def tupla_agente_y_arma(dicc: dict[str, tuple[str,str,float,str,int]]) -> list[tuple[str,str]]:
     tupla_res : list[tuple[str,str]] = []
-    for agente in dicc.keys():
-        tupla_res.append((agente, dicc[agente][2]))
+    for jugadores in dicc.keys():
+        tupla_res.append((dicc[jugadores][0], dicc[jugadores][3]))
     return tupla_res
 
 def sacar_agente(lista: list[str], agente: str) -> str:
@@ -92,13 +79,13 @@ def armas_elegidas(lista_tuplas_agente_y_arma: list[tuple[str,str]], agente: str
         if tupla[0] == agente:
             return tupla[1]
 
-def disparos(dicc: dict[str, tuple[str,float,str,int]]):
+def disparos(dicc: dict[str, tuple[str,str,float,str,int]]):
     primer_agente : str = random.choice(agentes(dicc))
     segundo_agente : str = sacar_agente(agentes(dicc), primer_agente)
     tuplas_agente_arma : list[tuple[str,str]] = tupla_agente_y_arma(dicc)
     arma_primer_agente : str = armas_elegidas(tuplas_agente_arma, primer_agente)
 
-    print(f'{primer_agente} has slained {segundo_agente} with {arma_primer_agente}')
-    
+    print(f'{primer_agente} le ha disparado a {segundo_agente} con {arma_primer_agente}!')
 
-    
+
+
