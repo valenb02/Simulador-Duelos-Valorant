@@ -1,5 +1,7 @@
 import random
 
+
+# dict[str,dict[tuple,dict[str,int]]]
 daño_armas = {
     "Classic": {
         (0, 30): {"cabeza": 78, "torso": 26, "pierna": 22},
@@ -128,7 +130,7 @@ def armas_elegidas(lista_tuplas_agente_y_arma: list[tuple[str,str]], agente: str
 
 
 def disparo_aleatorio() -> str:
-    lista_opciones : list[str] = ["la cabeza", "el torso", "las piernas"]
+    lista_opciones : list[str] = ["cabeza", "torso", "pierna"]
     return(random.choice(lista_opciones))
 
 ##########################################
@@ -163,13 +165,25 @@ def estado_inicial_duelo() -> dict[str, tuple[str,str,float,str,int]]:
     return dicc_res
 
 
-def disparos(dicc: dict[str, tuple[str,str,float,str,int]]):
+def disparos(dicc: dict[str, tuple[str,str,float,str,int]]) -> tuple[str,str,float]:
     primer_agente : str = random.choice(agentes(dicc))
     segundo_agente : str = sacar_agente(agentes(dicc), primer_agente)
     tuplas_agente_arma : list[tuple[str,str]] = tupla_agente_y_arma(dicc)
     arma_primer_agente : str = armas_elegidas(tuplas_agente_arma, primer_agente)
     direccion_disparo : str = disparo_aleatorio()
 
-    print(f'{primer_agente} le ha disparado a {segundo_agente} con {arma_primer_agente}! en {direccion_disparo}')
+    print(f'{primer_agente} le ha disparado a {segundo_agente} con {arma_primer_agente}! en la/el {direccion_disparo}')
+    return(arma_primer_agente,direccion_disparo,distancia_del_duelo())
 
 #disparos(estado_inicial_duelo())
+
+def calcular_daño(arma: str, direccion: str, distancia: float) -> int:
+    daño : int = 0
+    for gun in daño_armas.keys():
+        if arma == gun:
+            for intervalo in daño_armas[gun]:
+                if intervalo[0] <= distancia <= intervalo[1]:
+                    daño += daño_armas[gun][intervalo][direccion]
+    return daño
+
+#def modificar_diccionario
