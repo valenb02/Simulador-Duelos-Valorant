@@ -1,7 +1,6 @@
 import random
 
 
-# dict[str,dict[tuple,dict[str,int]]]
 daño_armas = {
     "Classic": {
         (0, 30): {"cabeza": 78, "torso": 26, "pierna": 22},
@@ -99,6 +98,8 @@ armas : list[str] = ["Vandal", "Phantom", "Guardian", "Warden", "Bulldog",
 
 bandos : list[str] = ["ATTACKER", "DEFENDER"]
 
+'''funciones auxiliares'''
+
 def elegir_personaje() -> str:
     return(random.choice(personajes))
 
@@ -135,9 +136,10 @@ def disparo_aleatorio() -> str:
     lista_opciones : list[str] = ["cabeza", "torso", "pierna"]
     return(random.choice(lista_opciones))
 
-##########################################
 def distancia_del_duelo() -> float:
     return(random.uniform(0.0,50.0))
+
+'''funciones principales'''
 
 '''crea el diccionario que guarda la info de los jugadores que se enfrentaran
  jugador1: (agente, lado, distancia, arma, hp)'''
@@ -195,7 +197,7 @@ def calcular_daño(arma: str, direccion: str, distancia: float) -> int:
 
     return daño
 
-'''acá comienza el duelo; a partir de acá se ven las funciones que eligen en primer tirador, y el ciclo de disparos que siguen'''
+'''acá comienza el duelo; a partir de acá se ve la funcion que elige al primer tirador, y la que maneja el ciclo de disparos que siguen'''
 
 def elegir_tirador_inicial(dicc: dict[str, tuple[str,str,float,str,int]]) -> str:
     lista_agentes : list[str] = agentes(dicc)
@@ -228,4 +230,7 @@ def modificar_diccionario(dicc: dict[str, tuple[str,str,float,str,int]],tirador:
 
     dicc[dañado] = (dicc[dañado][0], dicc[dañado][1], dicc[dañado][2], dicc[dañado][3], nuevo_hp)
     return dañado
-ciclo_del_duelo(estado_inicial_duelo())
+
+
+if __name__ == "__main__":
+    ciclo_del_duelo(estado_inicial_duelo())
