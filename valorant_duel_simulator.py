@@ -139,6 +139,8 @@ def disparo_aleatorio() -> str:
 def distancia_del_duelo() -> float:
     return(random.uniform(0.0,50.0))
 
+'''crea el diccionario que guarda la info de los jugadores que se enfrentaran
+ jugador1: (agente, lado, distancia, arma, hp)'''
 def estado_inicial_duelo() -> dict[str, tuple[str,str,float,str,int]]:
     dicc_res : dict[str,tuple[str,str,float,str,int]] = {}
     distancia_duelo : float = distancia_del_duelo()
@@ -166,16 +168,17 @@ def estado_inicial_duelo() -> dict[str, tuple[str,str,float,str,int]]:
         i += 1
     return dicc_res
 
-def disparos(dicc: dict[str, tuple[str,str,float,str,int]]) -> tuple[str,str,str,str,float]:
-    primer_agente : str = random.choice(agentes(dicc))
-    segundo_agente : str = sacar_agente(agentes(dicc), primer_agente)
+'''funcion que elige aleatoriamente quien dispara a quien y pone esa info en una quintupla:
+(disparador,arma con la que se dispara, victima, parte del cuerpo disparada, distancia )'''
+def disparos(dicc: dict[str, tuple[str,str,float,str,int]], tirador: str) -> tuple[str,str,str,str,float]:
+    segundo_agente : str = sacar_agente(agentes(dicc), tirador)
     tuplas_agente_arma : list[tuple[str,str]] = tupla_agente_y_arma(dicc)
-    arma_primer_agente : str = armas_elegidas(tuplas_agente_arma, primer_agente)
+    arma_primer_agente : str = armas_elegidas(tuplas_agente_arma, tirador)
     direccion_disparo : str = disparo_aleatorio()
 
-    return(primer_agente, arma_primer_agente, segundo_agente, direccion_disparo, dicc[primer_agente][2])
+    return(tirador, arma_primer_agente, segundo_agente, direccion_disparo, dicc[tirador][2])
 
-
+'''funcion que calcula el daño que hace el disparo segun el arma, direccion y distancia a la que fue el disparo'''
 def calcular_daño(arma: str, direccion: str, distancia: float) -> int:
     daño : int = 0
     for gun in daño_armas.keys():
@@ -185,9 +188,10 @@ def calcular_daño(arma: str, direccion: str, distancia: float) -> int:
                     daño += daño_armas[gun][intervalo][direccion]
     return daño
 
-def modificar_diccionario(dicc: dict[str, tuple[str,str,float,str,int]]):
-    info_primer_disparo : tuple[str,str,str,str,float] = disparos(dicc)
-    primer_agente : str = info_primer_disparo[0]
+
+'''funcion que modifica el diccionario, especificamente el hp que se le descuenta al personaje que esta recibiendo el daño'''
+def modificar_diccionario(dicc: dict[str, tuple[str,str,float,str,int]],tirador:str) -> str:
+    info_primer_disparo : tuple[str,str,str,str,float] = disparos(dicc,tirador)
     arma : str = info_primer_disparo[1]
     dañado : str = info_primer_disparo[2]
     direcc : str = info_primer_disparo[3]
@@ -195,8 +199,11 @@ def modificar_diccionario(dicc: dict[str, tuple[str,str,float,str,int]]):
     hp_a_descontar : int = calcular_daño(arma,direcc,distancia)
     hp_actual : int = dicc[dañado][4]
     nuevo_hp : int = hp_actual - hp_a_descontar
-    print(f'{primer_agente} le ha disparado a {dañado} con {arma}! en la/el {direcc}')
+    print(f'{tirador} le ha disparado a {dañado} con {arma}! en la/el {direcc}')
 
     dicc[dañado] = (dicc[dañado][0], dicc[dañado][1], dicc[dañado][2], dicc[dañado][3], nuevo_hp)
+    return tirador
 
-modificar_diccionario(estado_inicial_duelo())
+#modificar_diccionario(estado_inicial_duelo())
+
+#def ciclo_del_duelo(tirador: str)
