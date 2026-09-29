@@ -173,7 +173,7 @@ def disparos(dicc: dict[str, tuple[str,str,float,str,int]]) -> tuple[str,str,flo
     direccion_disparo : str = disparo_aleatorio()
 
     print(f'{primer_agente} le ha disparado a {segundo_agente} con {arma_primer_agente}! en la/el {direccion_disparo}')
-    return(arma_primer_agente,direccion_disparo,distancia_del_duelo())
+    return(arma_primer_agente,direccion_disparo,dicc[primer_agente][2])
 
 #disparos(estado_inicial_duelo())
 
@@ -187,3 +187,5 @@ def calcular_daño(arma: str, direccion: str, distancia: float) -> int:
     return daño
 
 #def modificar_diccionario
+
+# corregir bug en la llamada en disparos!
